@@ -2,6 +2,9 @@ import React, { useContext, useState } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
+import styles from '../SignIn.module.css';
+import { toast } from 'react-toastify';
+
 
 const SignIn: React.FC = () => {
   const authContext = useContext(AuthContext);
@@ -23,6 +26,7 @@ const SignIn: React.FC = () => {
         setAddress(accounts[0]);
         setIsWalletConnected(true);
         setIsSignedIn(false); // Reset sign-in status on new connection
+        toast.success("wallet connected successfully")
       } catch (error) {
         console.error('Error connecting wallet:', error);
       }
@@ -50,6 +54,7 @@ const SignIn: React.FC = () => {
         { withCredentials: true }
       );
       setIsSignedIn(true); // Set signed-in status to true after successful sign-in
+      toast.success("Signed In successfully")
       console.log('Signed in successfully');
     } catch (error) {
       console.error('Error during sign-in:', error);
@@ -64,28 +69,30 @@ const SignIn: React.FC = () => {
       setIsWalletConnected(false);
       setIsSignedIn(false); // Reset sign-in status
       console.log('Signed out successfully');
+      toast.success("Signed Out successfully")
     } catch (error) {
       console.error('Error signing out:', error);
     }
   };
 
   return (
-    <div>
-      {!isWalletConnected ? (
-        <button onClick={connectWallet}>Connect Wallet</button>
-      ) : (
-        <>
-          {!isSignedIn ? (
-            <button onClick={signIn}>Sign In</button> // Show "Sign In" after wallet connection
-          ) : (
-            <>
-              <p>Signed in as: {address}</p>
-              <button onClick={signOut}>Sign Out</button>
-            </>
-          )}
-        </>
-      )}
-    </div>
+    <div className={styles['main-container']}> 
+    {!isWalletConnected ? (
+      <button onClick={connectWallet}>Connect Wallet</button>
+    ) : (
+      <>
+        {!isSignedIn ? (
+          <button onClick={signIn}>Sign In</button>
+        ) : (
+          <>
+            <h3>Signed in and Connected with address: </h3>
+             <span>{address}</span>
+            <button onClick={signOut}>Sign Out</button>
+          </>
+        )}
+      </>
+    )}
+  </div>
   );
 };
 

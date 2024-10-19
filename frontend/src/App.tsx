@@ -1,15 +1,14 @@
 import React from 'react';
 import { AuthProvider } from './context/AuthContext';
 import SignIn from './components/SignIn';
-import Dashboard from './components/Dashboard';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <div>
+      <ToastContainer autoClose={2000} />
         <SignIn />
-        <Dashboard />
-      </div>
     </AuthProvider>
   );
 };

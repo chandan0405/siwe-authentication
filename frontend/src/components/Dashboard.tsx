@@ -2,12 +2,24 @@ import React, { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
 const Dashboard: React.FC = () => {
-  const { address, signOut } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    return <div>Loading...</div>; // Handle case where context is not yet available
+  }
+
+  const { address, signOut } = authContext;
 
   return (
     <div>
-      <p>Signed in as: {address}</p>
-      <button onClick={signOut}>Sign Out</button>
+      {address ? (
+        <>
+          <p>Connected with address: {address}</p>
+          <button onClick={signOut}>Sign Out</button>
+        </>
+      ) : (
+        <p>Please connect your wallet</p>
+      )}
     </div>
   );
 };
